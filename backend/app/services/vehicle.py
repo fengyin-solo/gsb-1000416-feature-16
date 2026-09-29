@@ -4,8 +4,11 @@ from __future__ import annotations
 from typing import Any
 
 from app.store import store
+from app.services.toll import TollService
 
 MODULE = "vehicle"
+# 车辆列表上的通行费列直接复用通行费用服务，保证和过路明细、费用汇总同一结论
+toll_service = TollService()
 REQUIRED_FIELDS = ["车辆编号", "车牌号", "车型类别"]
 STATUS_ORDER = ["空闲", "已派单", "执行中", "维修中", "停运"]
 ACTION_RULES = {"派发出车": "已派单", "收车归队": "空闲", "报修车辆": "维修中"}
@@ -28,10 +31,19 @@ class VehicleService:
             rows = [row for row in rows if row.get("status") == status]
         total = len(rows)
         start = max(page - 1, 0) * size
-        return rows[start:start + size], total
+        page_rows = [self._with_toll(row) for row in rows[start:start + size]]
+        return page_rows, total
 
     def get_entry(self, entry_id: int) -> dict[str, Any] | None:
-        return store.find(MODULE, entry_id)
+        entry = store.find(MODULE, entry_id)
+        return self._with_toll(entry) if entry is not None else None
+
+    def _with_toll(self, row: dict[str, Any]) -> dict[str, Any]:
+        """附加通行费结论：数据仍由 toll 服务统一计算，本模块不另立口径。"""
+        summary = toll_service.vehicle_toll_summary(str(row.get("车辆编号") or ""))
+        enriched = dict(row)
+        enriched.update(summary)
+        return enriched
 
     def create_entry(self, values: dict[str, Any]) -> tuple[dict[str, Any] | None, list[str]]:
         missing = [field for field in REQUIRED_FIELDS if not str(values.get(field) or "").strip()]

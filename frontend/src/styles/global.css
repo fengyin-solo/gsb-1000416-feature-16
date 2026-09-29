@@ -33,3 +33,27 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .link { border: none; background: none; color: var(--brand); cursor: pointer; padding: 0; }
 .page-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--muted); }
 .error-text { color: #b42318; }
+
+/* 通行费用：结论徽章、口径面板、弹层 */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; white-space: nowrap; }
+.badge-normal { background: #e8f5e9; color: #1b7a32; border: 1px solid #a5d6a7; }
+.badge-exception { background: #e3f2fd; color: #1558b0; border: 1px solid #90caf9; }
+.badge-abnormal { background: #fef3e2; color: #b54708; border: 1px solid #f5c18a; }
+.badge-reversed { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+.muted-cell { color: var(--muted); }
+.modal-mask { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal { background: #fff; border-radius: 10px; width: 560px; max-width: 92vw; max-height: 86vh; overflow: auto; padding: 18px 20px; }
+.modal h3 { margin: 0 0 12px; font-size: 16px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.form-grid label span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+.form-grid input, .form-grid select, .form-grid textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font: inherit; }
+.form-grid .full { grid-column: 1 / -1; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.tip-box { background: #f0f7ff; border: 1px solid #b6d7f5; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #1558b0; margin-bottom: 12px; }
+.timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--border); }
+.timeline li { padding: 0 0 12px 14px; position: relative; font-size: 13px; }
+.timeline li::before { content: ''; position: absolute; left: -6px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); }
+.timeline .tl-time { color: var(--muted); font-size: 12px; margin-right: 6px; }
+.rules-panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; font-size: 13px; }
+.rules-panel h4 { margin: 8px 0 6px; font-size: 13px; }
+.rules-panel table { margin-bottom: 6px; }
