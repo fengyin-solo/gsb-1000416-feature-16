@@ -36,7 +36,9 @@
       </thead>
       <tbody>
         <tr v-for="row in rows" :key="String(row.id)">
-          <td v-for="column in columns" :key="column">{{ row[column] ?? '—' }}</td>
+          <td v-for="column in columns" :key="column">
+            {{ moneyColumns.includes(column) ? formatMoney(row[column]) : (row[column] ?? '—') }}
+          </td>
           <td class="row-actions">
             <button
               v-for="action in actions"
@@ -70,7 +72,7 @@ import { request } from '@/api/client'
 type Row = Record<string, string | number | null>
 
 const ENDPOINT = '/api/vehicle'
-const columns = ["车辆编号", "车牌号", "车型类别", "温层能力", "制冷机组型号", "上次维保日", "当前位置", "车辆状态"]
+const columns = ["车辆编号", "车牌号", "车型类别", "温层能力", "制冷机组型号", "上次维保日", "当前位置", "车辆状态", "通行费合计", "待核通行费", "待核记录数"]
 const actions = ["派发出车", "收车归队", "报修车辆"]
 const statuses = ["空闲", "已派单", "执行中", "维修中", "停运"]
 const stats = [{"label": "空闲车辆", "value": 0}, {"label": "执行中车辆", "value": 0}, {"label": "维修中车辆", "value": 0}]
@@ -80,6 +82,11 @@ const total = ref(0)
 const errorMessage = ref('')
 const filters = ref<Record<string, string>>({})
 const filterFields = columns.slice(0, 3)
+const moneyColumns = ["通行费合计", "待核通行费"]
+
+function formatMoney(value: unknown): string {
+  return `¥${Number(value ?? 0).toFixed(2)}`
+}
 
 function resetFilters() {
   filters.value = {}
